@@ -19,6 +19,7 @@ class Thinkific {
     protected $httpClient;
 
     private $apikey;
+    private $access_token;
     private $subdomain;
 
     protected $apis = [];
@@ -28,6 +29,9 @@ class Thinkific {
 
         if ( isset( $config['apikey'] ) ) {
             $this->apikey = $config['apikey'];
+        }
+        if ( isset( $config['access_token'] ) ) {
+            $this->access_token = $config['access_token'];
         }
         if ( isset( $config['subdomain'] ) ) {
             $this->subdomain = $config['subdomain'];
@@ -90,12 +94,15 @@ class Thinkific {
             $url .= "?" . http_build_query( $options['query'] );
         }
 
-        $reqoptions['headers'] = [
-            //            'User-Agent'       => 'thinkific-php/1.0',
+        $reqoptions['headers'] = array_filter([
             'Accept'           => 'application/json',
             'X-Auth-API-Key'   => $this->apikey,
             'X-Auth-Subdomain' => $this->subdomain
-        ];
+        ]);
+
+        if(isset($this->access_token)) {
+            $reqoptions['headers']['Authorization'] = 'Bearer: '.$this->access_token;
+        }
 
         if ( count( $body ) > 0 ) {
             $reqoptions['form_params'] = $body;
@@ -117,5 +124,3 @@ class Thinkific {
     }
 
 }
-
-

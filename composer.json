@@ -1,6 +1,6 @@
 {
     "name" : "marcfowler/thinkific-php",
-    "description" : "PHP SDK for interacting with the Thinktastic LMS Api",
+    "description" : "PHP SDK for interacting with the Thinkific LMS Api",
     "keywords" : [ "thinkific", "lms" ],
     "homepage" : "https://github.com/marcfowler/thinkific-php",
     "license" : "MIT",
