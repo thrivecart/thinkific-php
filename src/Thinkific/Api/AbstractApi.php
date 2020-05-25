@@ -12,7 +12,7 @@ abstract class AbstractApi {
     /**
      * @return mixed
      */
-    public function getAll($opts) {
+    public function getAll($opts = null) {
         $class_name = preg_split( '/\\\/', get_class( $this ) );
         return json_decode( $this->client->request( [
             "endpoint" => strtolower( array_pop( $class_name ) ),
