@@ -5,97 +5,102 @@ use Thinkific\Thinkific;
 
 abstract class AbstractApi {
 
-    public function __construct( Thinkific $client ) {
-        $this->client = $client;
-    }
+	public function __construct( Thinkific $client ) {
+		$this->client = $client;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getAll($opts = null) {
-        $class_name = preg_split( '/\\\/', get_class( $this ) );
-        return json_decode( $this->client->request( [
-            "endpoint" => strtolower( array_pop( $class_name ) ),
-            'query' => $opts,
-        ] ), true )['items'];
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getAll($opts = null, $raw = false) {
+		$class_name = preg_split('/\\\/', get_class($this));
 
-    /**
-     * Get an object by Id
-     * @param $id
-     *
-     * @return object
-     */
-    public function getById( $id ) {
-        $class_name = preg_split( '/\\\/', get_class( $this ) );
-        return json_decode( $this->client->request( [
-            "endpoint" => strtolower( array_pop( $class_name ) ),
-            "id"       => $id,
-        ] ) );
-    }
+		$response = $this->client->request([
+			"endpoint" => strtolower( array_pop( $class_name ) ),
+			'query' => $opts,
+		]);
 
-    /**
-     * Add something via the Api
-     * @param $data
-     *
-     * @return mixed
-     * @throws ApiException
-     */
-    public function add( $data ) {
-        $class_name = preg_split( '/\\\/', get_class( $this ) );
-        $result = json_decode( $this->client->request( [
-            "endpoint"   => strtolower( array_pop( $class_name ) ),
-            "httpmethod" => "POST",
-            "body"       => $data
-        ] ), true );
+		$response = json_decode($response, true);
 
-        if ( isset( $result["errors"] ) ) {
-            throw new ApiException( $result["errors"] );
-        } else {
-            return $result;
-        }
-    }
+		return ($raw === false ? $response['items'] : $response);
+	}
 
-    /**
-     * Updates a User
-     *
-     * @param $id   - Id of what to update
-     * @param $data - Array of information to update
-     *
-     *
-     * @return mixed
-     * @throws ApiException
-     */
-    public function update( $id, $data ) {
-        $class_name = preg_split( '/\\\/', get_class( $this ) );
-        $result = json_decode( $this->client->request( [
-            "endpoint"   => strtolower( array_pop( $class_name ) ),
-            "httpmethod" => "PUT",
-            "id"         => $id,
-            "body"       => $data
-        ] ) );
+	/**
+	 * Get an object by Id
+	 * @param $id
+	 *
+	 * @return object
+	 */
+	public function getById( $id ) {
+		$class_name = preg_split( '/\\\/', get_class( $this ) );
+		return json_decode( $this->client->request( [
+			"endpoint" => strtolower( array_pop( $class_name ) ),
+			"id"       => $id,
+		] ) );
+	}
 
-        if ( isset( $result["errors"] ) ) {
-            throw new ApiException( $result["errors"] );
-        } else {
-            return $result;
-        }
+	/**
+	 * Add something via the Api
+	 * @param $data
+	 *
+	 * @return mixed
+	 * @throws ApiException
+	 */
+	public function add( $data ) {
+		$class_name = preg_split( '/\\\/', get_class( $this ) );
+		$result = json_decode( $this->client->request( [
+			"endpoint"   => strtolower( array_pop( $class_name ) ),
+			"httpmethod" => "POST",
+			"body"       => $data
+		] ), true );
 
-    }
+		if ( isset( $result["errors"] ) ) {
+			throw new ApiException( $result["errors"] );
+		} else {
+			return $result;
+		}
+	}
 
-    /**
-     * Delete by Id
-     *
-     * @param $id
-     *
-     * @return mixed
-     */
-    public function delete( $id ) {
-        $class_name = preg_split( '/\\\/', get_class( $this ) );
-        return json_decode( $this->client->request( [
-            "endpoint"   => strtolower( array_pop( $class_name ) ),
-            "httpmethod" => "DELETE",
-            "id"         => $id
-        ] ) );
-    }
+	/**
+	 * Updates a User
+	 *
+	 * @param $id   - Id of what to update
+	 * @param $data - Array of information to update
+	 *
+	 *
+	 * @return mixed
+	 * @throws ApiException
+	 */
+	public function update( $id, $data ) {
+		$class_name = preg_split( '/\\\/', get_class( $this ) );
+		$result = json_decode( $this->client->request( [
+			"endpoint"   => strtolower( array_pop( $class_name ) ),
+			"httpmethod" => "PUT",
+			"id"         => $id,
+			"body"       => $data
+		] ) );
+
+		if ( isset( $result["errors"] ) ) {
+			throw new ApiException( $result["errors"] );
+		} else {
+			return $result;
+		}
+
+	}
+
+	/**
+	 * Delete by Id
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function delete( $id ) {
+		$class_name = preg_split( '/\\\/', get_class( $this ) );
+		return json_decode( $this->client->request( [
+			"endpoint"   => strtolower( array_pop( $class_name ) ),
+			"httpmethod" => "DELETE",
+			"id"         => $id
+		] ) );
+	}
 }
