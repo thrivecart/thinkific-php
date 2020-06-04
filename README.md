@@ -98,7 +98,3 @@ $users->delete( 1234);
 
 For more details of which endpoints support which, please make sure you look through the [Thinkific API Docs](https://api.thinkific.com/documentation).
 
-
-
-
-
