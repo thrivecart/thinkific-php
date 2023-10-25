@@ -1,5 +1,5 @@
 {
-    "name" : "marcfowler/thinkific-php",
+    "name" : "tcdev/thinkific-php",
     "description" : "PHP SDK for interacting with the Thinkific LMS Api",
     "keywords" : [ "thinkific", "lms" ],
     "homepage" : "https://github.com/marcfowler/thinkific-php",
